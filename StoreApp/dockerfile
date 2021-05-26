@@ -1,0 +1,25 @@
+# base image
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+
+# baby of mkdir and cd
+WORKDIR /app
+
+COPY *.sln ./
+COPY StoreBL/*.csproj StoreBL/
+COPY StoreDL/*.csproj StoreDL/
+COPY StoreTest/*.csproj StoreTest/
+COPY StoreModels/*.csproj StoreModels/
+
+RUN cd StoreUI && dotnet restore
+
+COPY . ./
+
+RUN dotnet publish StoreUI -c Release -o publish --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 as runtime
+
+WORKDIR /app
+# From the build stage, I wanna get the published version of my app
+COPY --from=build /app/publish ./
+
+CMD ["dotnet", "StoreUI.dll"]
