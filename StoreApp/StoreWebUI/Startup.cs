@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using StoreDL;
+using StoreBL;
 using Microsoft.EntityFrameworkCore;
 
 namespace StoreWebUI
@@ -27,6 +28,10 @@ namespace StoreWebUI
         {
             services.AddControllersWithViews();
             services.AddDbContext<StoreDBContext>(options => options.UseNpgsql(Configuration.GetConnectionString("StoreDB")));
+            services.AddScoped<CustomerDB>();
+            services.AddScoped<ManagerDB>();
+            services.AddScoped<CustomerBL>();
+            services.AddScoped<ManagerBL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

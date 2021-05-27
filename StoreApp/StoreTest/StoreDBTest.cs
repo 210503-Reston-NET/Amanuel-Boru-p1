@@ -1,4 +1,3 @@
-using Entity = StoreDL.Entities;
 using Model = StoreModels;
 using Xunit;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +9,7 @@ namespace StoreTest
 {
     public class StoreDBTest
     {
+        /*
         private readonly DbContextOptions<Entity.p0storeContext> options;
 
         public StoreDBTest()
@@ -179,6 +179,6 @@ namespace StoreTest
                 );
                 context.SaveChanges();
             }
-        }
+        }*/
     }
 }
