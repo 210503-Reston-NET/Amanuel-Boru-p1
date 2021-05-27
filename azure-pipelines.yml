@@ -1,0 +1,47 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool: Default
+
+variables:
+  solution: '**/StoreApp/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+#This a basic pipline that restores builds and tests
+- task: DotNetCoreCLI@2
+  displayName: Restore project deps
+  inputs:
+    command: 'restore'
+    projects: '$(solution)'
+    feedsToUse: 'select'
+- task: DotNetCoreCLI@2
+  displayName: build the solution
+  inputs:
+    command: 'build'
+    projects: '$(solution)'
+- task: DotNetCoreCLI@2
+  displayName: test
+  inputs:
+    command: 'test'
+    projects: '**/StoreApp/StoreTest/*.csproj'
+- task: DotNetCoreCLI@2
+  displayName: publish
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    zipAfterPublish: true
+    projects: '**/StoreApp/StoreWebUI/*.csproj'
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(9efa043e-8da6-4636-85c6-da259c8abe20)'
+    appType: 'webApp'
+    WebAppName: 'AmanuelsFlowerStore'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
