@@ -14,6 +14,13 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'Sonarcloud StoreApp'
+    organization: '210503-reston-net'
+    scannerMode: 'MSBuild'
+    projectKey: '210503-Reston-NET_Amanuel-Boru-p1'
+    projectName: 'Amanuel-Boru-p1'
 #This a basic pipline that restores builds and tests
 - task: DotNetCoreCLI@2
   displayName: Restore project deps
@@ -31,6 +38,15 @@ steps:
   inputs:
     command: 'test'
     projects: '**/StoreApp/StoreTest/*.csproj'
+    arguments: --configuration $(buildConfiguration) --collect "Code Coverage"
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '**/corbertura/coverage.xml'
+- task: SonarCloudAnalyze@1
+  displayName: run code analysis
+- task: SonarCloudPublish@1
+  displayName: publish code analysis
 - task: DotNetCoreCLI@2
   displayName: publish
   inputs:
