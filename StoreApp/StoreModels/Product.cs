@@ -21,7 +21,7 @@ namespace StoreModels
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public double Price { get; set; }
-        //todo: add more properties to define a product (maybe a category?)
+        
 
         public bool Equals(Product newProduct){
             return this.ProductName.Equals(newProduct.ProductName) && this.Price.Equals(newProduct.Price);

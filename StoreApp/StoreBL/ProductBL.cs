@@ -30,5 +30,20 @@ namespace StoreBL
         public Product GetProduct(int id){
             return _ProductsDB.GetProduct(id);
         }
+
+        public Product UpdateProduct(Product product)
+        {
+            return _ProductsDB.UpdateProduct(product);
+        }
+
+        public Product DeleteProduct(Product product)
+        {
+            Product toBeDeleted = _ProductsDB.DeleteProduct(product);
+            if (toBeDeleted != null)  return _ProductsDB.DeleteProduct(toBeDeleted);
+            else
+            {
+                throw new Exception("There is no product to delete");
+            }
+        }
     }
 }

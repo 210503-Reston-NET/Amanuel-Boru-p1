@@ -30,8 +30,10 @@ namespace StoreWebUI
             services.AddDbContext<StoreDBContext>(options => options.UseNpgsql(Configuration.GetConnectionString("StoreDB")));
             services.AddScoped<CustomerDB>();
             services.AddScoped<ManagerDB>();
+            services.AddScoped<ProductsDB>();
             services.AddScoped<CustomerBL>();
             services.AddScoped<ManagerBL>();
+            services.AddScoped<ProductBL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

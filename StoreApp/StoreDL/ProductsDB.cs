@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using StoreModels;
 using System.Linq;
+using System;
 
 namespace StoreDL
 {
@@ -29,10 +30,27 @@ namespace StoreDL
         public Product GetProduct(int id){
             Product found = _context.Products.FirstOrDefault(product =>  product.ProductId == id);
 
+            return found;
+            /*
             if (found == null) return null;
             else{
-                return new Product(found.ProductId, found.ProductName, found.Price);
-            }
+                return found;
+            }*/
+        }
+
+        public Product DeleteProduct(Product product)
+        {
+            Product toBeDeleted = _context.Products.First(prod => prod.ProductId == product.ProductId);
+            _context.Products.Remove(toBeDeleted);
+            _context.SaveChanges();
+            return product;
+        }
+
+        public Product UpdateProduct(Product product)
+        {
+            _context.Products.Update(product);
+            _context.SaveChanges();
+            return product;
         }
     }
 }
