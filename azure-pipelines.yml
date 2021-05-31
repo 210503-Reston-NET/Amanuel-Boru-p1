@@ -39,14 +39,14 @@ steps:
     command: 'test'
     projects: '**/StoreApp/StoreTest/*.csproj'
     arguments: --configuration $(buildConfiguration) --collect "Code Coverage"
-- task: PublishCodeCoverageResults@1
-  inputs:
-    codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '**/corbertura/coverage.xml'
-- task: SonarCloudAnalyze@1
-  displayName: run code analysis
-- task: SonarCloudPublish@1
-  displayName: publish code analysis
+#- task: PublishCodeCoverageResults@1
+#  inputs:
+#    codeCoverageTool: 'Cobertura'
+#    summaryFileLocation: '**/corbertura/coverage.xml'
+#- task: SonarCloudAnalyze@1
+#  displayName: run code analysis
+#- task: SonarCloudPublish@1
+#  displayName: publish code analysis
 - task: DotNetCoreCLI@2
   displayName: publish
   inputs:
