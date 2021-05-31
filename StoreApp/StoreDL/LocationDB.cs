@@ -30,6 +30,11 @@ namespace StoreDL
             return _context.Locations.Select( location => new Location(location.LocationName, location.Address, location.LocationID)).ToList();
         }
 
+        public Location GetLocationById(int id)
+        {
+            return _context.Locations.FirstOrDefault(location => location.LocationID == id);
+        }
+
         public Location GetLocation(Location location){
             Location found = _context.Locations.FirstOrDefault(local =>  local.LocationID == location.LocationID);
 
@@ -53,6 +58,41 @@ namespace StoreDL
                 ).ToList();
 
             return inventory;
+        }
+
+        public Inventory UpdateInventory(Inventory inventory)
+        {
+            _context.Inventories.Update(inventory);
+            _context.SaveChanges();
+            return inventory;
+        }
+
+        public Inventory DeleteItem(int id)
+        {
+            Inventory toBeDeleted = _context.Inventories.FirstOrDefault(item => item.InventoryId == id);
+            _context.Inventories.Remove(toBeDeleted);
+            _context.SaveChanges();
+            return toBeDeleted;
+        }
+
+        public Inventory GetInventoryItem(int id)
+        {
+            return _context.Inventories.FirstOrDefault(item => item.InventoryId == id);
+        }
+
+        public Location UpdateLocation(Location location)
+        {
+            _context.Locations.Update(location);
+            _context.SaveChanges();
+            return location;
+        }
+
+        public Location DeleteLocation(Location location)
+        {
+            Location toBeDeleted = _context.Locations.FirstOrDefault(loca => loca.LocationID == location.LocationID);
+            _context.Locations.Remove(toBeDeleted);
+            _context.SaveChanges();
+            return location;
         }
 
         public void changeInventory(int location, Inventory item, int amount){

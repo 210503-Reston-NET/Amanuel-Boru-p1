@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace StoreModels
 {
     public class Inventory
@@ -28,6 +31,9 @@ namespace StoreModels
 
         public int InventoryId { get; set; }
         public int LocationId { get; set; }
+
+        [ForeignKey("Product")]
+        [Required]
         public int ProductId { get; set; }
         public int Quantity { get; set; }
 
