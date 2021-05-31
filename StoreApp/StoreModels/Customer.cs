@@ -8,21 +8,18 @@ namespace StoreModels
         public Customer()
         {
         }
-        public Customer(string name, string username, string password){
+        public Customer(string name, string username){
             this.Name = name;
             this.UserName = username;
-            Password = password;
         }
         
         public Customer(string username){
             UserName = username;
             Name = null;
-            Password = null;
         }
 
         public string Name { get; set; }
         public string UserName { get; set; }
-        public string Password { get; set; }
 
         public bool Equals(string username){
             return this.UserName.Equals(username);

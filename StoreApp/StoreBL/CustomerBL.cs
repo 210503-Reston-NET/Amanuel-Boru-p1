@@ -33,5 +33,10 @@ namespace StoreBL
         public Customer GetCustomer(string username){
             return _customerDB.GetCustomer(username);
         }
+
+        public Customer DeleteCustomer(Customer customer)
+        {
+            return _customerDB.DeleteCustomer(customer);
+        }
     }
 }

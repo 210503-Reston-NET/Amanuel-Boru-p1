@@ -12,6 +12,7 @@ namespace StoreBL
         public OrderBL(OrderDB orderDB, ProductsDB productDB)
         {
             _orderDB = orderDB;
+            _productDB = productDB;
         }
 
         public Order AddOreder(Order newOrder, Location location){

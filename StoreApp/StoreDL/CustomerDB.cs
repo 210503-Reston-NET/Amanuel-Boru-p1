@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using StoreModels;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace StoreDL
 {
@@ -21,7 +22,7 @@ namespace StoreDL
         }
         public List<Customer> GetAllCustomers(){
             List<Customer> customers = _context.Customers
-                .Select( customer => new Customer(customer.Name, customer.UserName, customer.Password))
+                .Select( customer => new Customer(customer.Name, customer.UserName))
                 .ToList();
             
             return customers;
@@ -32,8 +33,16 @@ namespace StoreDL
 
             if (found == null) return null;
             else{
-                return new Customer(found.Name, found.UserName, found.Password);
+                return new Customer(found.Name, found.UserName);
             }
+        }
+
+        public Customer DeleteCustomer(Customer customer)
+        {
+            Customer toBeDeleted = _context.Customers.FirstOrDefault(cust => cust.UserName == customer.UserName);
+            _context.Customers.Remove(toBeDeleted);
+            _context.SaveChanges();
+            return toBeDeleted;
         }
     }
 }

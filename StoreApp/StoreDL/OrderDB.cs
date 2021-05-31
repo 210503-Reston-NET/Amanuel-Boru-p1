@@ -55,7 +55,7 @@ namespace StoreDL
         public Customer GetCustomer(string username){
             Customer found = customerDB.GetCustomer(username);
 
-            return new Customer(found.Name, found.UserName, found.Password);
+            return new Customer(found.Name, found.UserName);
         }
 
         public string GetCustomerName(string username){
