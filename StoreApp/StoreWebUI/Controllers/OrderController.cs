@@ -8,6 +8,7 @@ using StoreBL;
 using StoreModels;
 using StoreWebUI.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Serilog;
 
 namespace StoreWebUI.Controllers
 {
@@ -26,6 +27,7 @@ namespace StoreWebUI.Controllers
         // GET: OrderController
         public ActionResult Index()
         {
+            Log.Information("Order page opened");
             return View(_orderBL.GetAllOrder().Select(ord => new OrderVM(ord)).ToList());
         }
 
@@ -57,7 +59,7 @@ namespace StoreWebUI.Controllers
                 {
                     return RedirectToAction(nameof(Create), new { id = "Username doesnt exist" });
                 }
-
+                Log.Information("Order created");
                 _orderBL.AddOreder(new Order(orderVM.UserName, Int32.Parse(orderVM.LocationId), orderVM.Orderdate, orderVM.Total));
                 return RedirectToAction(nameof(Index));
             }
@@ -84,6 +86,7 @@ namespace StoreWebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    Log.Information("Order deleted");
                     _orderBL.DeleteOrder(id);
                     return RedirectToAction(nameof(Index));
                 }

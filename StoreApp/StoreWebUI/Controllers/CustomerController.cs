@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using StoreModels;
 using StoreBL;
 using StoreWebUI.Models;
+using Serilog;
 
 namespace StoreWebUI.Controllers
 {
@@ -25,6 +26,7 @@ namespace StoreWebUI.Controllers
         // GET: CustomerController
         public ActionResult Index()
         {
+            Log.Information("Customer page opened");
             return View(_customerBL.GetAllCustomers().Select(cust => new CustomerVM(cust)).ToList());
         }
 
@@ -37,6 +39,7 @@ namespace StoreWebUI.Controllers
 
         public ActionResult OrderBydate(string username)
         {
+            Log.Information("Order by date from customer");
             ViewBag.UserName = username;
             List<OrderVM> orders = _orderBL.CustomerOrdersBydate(new Customer(username)).Select(order => new OrderVM(order)).ToList();
             return View(orders);
@@ -44,6 +47,7 @@ namespace StoreWebUI.Controllers
 
         public ActionResult OrderBYTotal(string username)
         {
+            Log.Information("Order by total from customer");
             ViewBag.UserName = username;
             List<OrderVM> orders = _orderBL.CustomerOrdersByTotal(new Customer(username)).Select(order => new OrderVM(order)).ToList();
             return View(orders);
@@ -69,7 +73,7 @@ namespace StoreWebUI.Controllers
                     {
                         return RedirectToAction(nameof(Create), new { id = "Username is already taken Please try again"});
                     }
-
+                    Log.Information("Customer created");
                     _customerBL.AddCustomer(new Customer(customerVM.name, customerVM.username));
                     return RedirectToAction(nameof(Index));
                 }
@@ -98,6 +102,7 @@ namespace StoreWebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    Log.Information("Customer Deleted");
                     _customerBL.DeleteCustomer(new Customer(id));
                     return RedirectToAction(nameof(Index));
                 }

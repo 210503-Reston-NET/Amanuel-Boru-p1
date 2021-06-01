@@ -8,6 +8,7 @@ using StoreBL;
 using StoreModels;
 using StoreWebUI.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Serilog;
 
 namespace StoreWebUI.Controllers
 {
@@ -28,6 +29,7 @@ namespace StoreWebUI.Controllers
         // GET: ItemController
         public ActionResult Index(int id)
         {
+            Log.Information("Item page opened");
             ViewBag.OrderID = id;
             List<Item> items = _orderBL.GetItems(id);
             List<ItemVM> itemVMs = new List<ItemVM>();
@@ -84,7 +86,7 @@ namespace StoreWebUI.Controllers
                     Order order = _orderBL.GetOrder(itemVM.OrderId);
                     order.Total += total;
                     _orderBL.UpdateOrder(order);
-                    
+                    Log.Information("Item Created");
                     return RedirectToAction(nameof(Index), new { id = itemVM.OrderId });
                 }
                 return View();
@@ -108,6 +110,7 @@ namespace StoreWebUI.Controllers
         {
             try
             {
+                Log.Information("Item eddited");
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -130,6 +133,7 @@ namespace StoreWebUI.Controllers
         {
             try
             {
+                Log.Information("Item deleted");
                 return RedirectToAction(nameof(Index));
             }
             catch

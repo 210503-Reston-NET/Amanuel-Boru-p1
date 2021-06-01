@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using StoreDL;
 using StoreBL;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace StoreWebUI
 {
@@ -26,6 +27,10 @@ namespace StoreWebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Log.Logger = new LoggerConfiguration()
+                           .WriteTo.AzureBlobStorage(Configuration.GetConnectionString("Logging"))
+                           .CreateLogger();
+
             services.AddControllersWithViews();
             services.AddDbContext<StoreDBContext>(options => options.UseNpgsql(Configuration.GetConnectionString("StoreDB")));
             services.AddScoped<CustomerDB>();

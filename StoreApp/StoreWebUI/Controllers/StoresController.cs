@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using StoreBL;
 using StoreModels;
 using StoreWebUI.Models;
+using Serilog;
 
 namespace StoreWebUI.Controllers
 {
@@ -23,6 +24,7 @@ namespace StoreWebUI.Controllers
         // GET: StoresController
         public ActionResult Index()
         {
+            Log.Information("Store Page opened");
             return View(_locationBL.GetAllLocations().Select(location => new LocationVM(location)).ToList());
         }
 
@@ -42,6 +44,7 @@ namespace StoreWebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    Log.Information("New storage added");
                     _locationBL.AddLocation(new Location(locationVM.LocationName, locationVM.Address));
                     return RedirectToAction(nameof(Index));
                 }
@@ -62,6 +65,7 @@ namespace StoreWebUI.Controllers
 
         public ActionResult OrderBydate(int id)
         {
+            Log.Information("Order By date called");
             ViewBag.id = id;
             List<OrderVM> orders = _orderBL.LocationOrdersBydate(id).Select(order => new OrderVM(order)).ToList();
             return View(orders);
@@ -69,6 +73,7 @@ namespace StoreWebUI.Controllers
 
         public ActionResult OrderBYTotal(int id)
         {
+            Log.Information("Order by total called");
             ViewBag.id = id;
             List<OrderVM> orders = _orderBL.LocationOrdersByTotal(id).Select(order => new OrderVM(order)).ToList();
             return View(orders);
@@ -89,6 +94,7 @@ namespace StoreWebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    Log.Information("Location Edited");
                     _locationBL.UpdateLocation(new Location(locationVM.LocationName, locationVM.Address, id));
                     return RedirectToAction(nameof(Index));
                 }
@@ -115,6 +121,7 @@ namespace StoreWebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    Log.Information("Location deleted");
                     _locationBL.DeleteLocation(_locationBL.GetLocation(id));
                     return RedirectToAction(nameof(Index));
                 }

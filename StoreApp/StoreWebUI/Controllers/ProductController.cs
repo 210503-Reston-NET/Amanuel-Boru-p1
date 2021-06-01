@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using StoreBL;
 using StoreModels;
 using StoreWebUI.Models;
+using Serilog;
 
 namespace StoreWebUI.Controllers
 {
@@ -22,6 +23,7 @@ namespace StoreWebUI.Controllers
         // GET: ProductController
         public ActionResult Index()
         {
+            Log.Information("Product page opened");
             return View(_productBL.GetAllProducts().Select(prod => new ProductVM(prod)).ToList());
         }
 
@@ -41,6 +43,7 @@ namespace StoreWebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    Log.Information("New product created");
                     _productBL.AddProduct(new Product(productVM.ProductName, productVM.Price));
                     return RedirectToAction(nameof(Index));
                 }
@@ -68,6 +71,7 @@ namespace StoreWebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    Log.Information("A product Edited");
                     _productBL.UpdateProduct(new Product(productVM.ProductId, productVM.ProductName, productVM.Price));
                     return RedirectToAction(nameof(Index));
                 }
@@ -94,6 +98,7 @@ namespace StoreWebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    Log.Information("Product Deleted");
                     _productBL.DeleteProduct(_productBL.GetProduct(id));
                     return RedirectToAction(nameof(Index));
                 }

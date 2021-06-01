@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using StoreModels;
 using StoreBL;
 using StoreWebUI.Models;
+using Serilog;
 
 namespace StoreWebUI.Controllers
 {
@@ -25,6 +26,7 @@ namespace StoreWebUI.Controllers
         // GET: InventoryController
         public ActionResult Index(int id)
         {
+            Log.Information("Inventory Page opened");
             ViewBag.Location = _locationBL.GetLocation(id);
             return View(_locationBL.GetInventory(_locationBL.GetLocation(id))
                         .Select(inventory => new InventoryVM {
@@ -61,6 +63,7 @@ namespace StoreWebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    Log.Information("Inventory created");
                     _locationBL.AddItemToLocation(inventoryVM.LocationId, new Inventory(inventoryVM.LocationId, Int32.Parse(inventoryVM.ProductId), inventoryVM.Quantity));
                     return RedirectToAction(nameof(Index), new { id = inventoryVM.LocationId });
                 }
@@ -91,6 +94,7 @@ namespace StoreWebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    Log.Information("Inventory edited");
                     _locationBL.UpdateInventory(new Inventory(inventoryVM.InventoryId, inventoryVM.LocationId, Int32.Parse(inventoryVM.ProductId), inventoryVM.Quantity));
                     return RedirectToAction(nameof(Index), new { id = inventoryVM.LocationId });
                 }
@@ -120,6 +124,7 @@ namespace StoreWebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    Log.Information("Inventory Deleted");
                     int locationId = _locationBL.DeleteItem(id).LocationId;
                     return RedirectToAction(nameof(Index), new { id = locationId });
                 }
