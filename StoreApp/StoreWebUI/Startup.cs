@@ -33,11 +33,11 @@ namespace StoreWebUI
             services.AddScoped<ProductsDB>();
             services.AddScoped<LocationDB>();
             services.AddScoped<OrderDB>();
-            services.AddScoped<CustomerBL>();
+            services.AddScoped<ICustomerBL, CustomerBL>();
             services.AddScoped<ManagerBL>();
-            services.AddScoped<ProductBL>();
-            services.AddScoped<LocationBL>();
-            services.AddScoped<OrderBL>();
+            services.AddScoped<IProductBL, ProductBL>();
+            services.AddScoped<ILocationBL, LocationBL>();
+            services.AddScoped<IOrderBL, OrderBL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

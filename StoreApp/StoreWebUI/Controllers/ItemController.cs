@@ -13,11 +13,11 @@ namespace StoreWebUI.Controllers
 {
     public class ItemController : Controller
     {
-        private ProductBL _productBL;
-        private OrderBL _orderBL;
-        private LocationBL _locationBL;
+        private IProductBL _productBL;
+        private IOrderBL _orderBL;
+        private ILocationBL _locationBL;
 
-        public ItemController(ProductBL productBL, OrderBL orderBL, LocationBL locationBL)
+        public ItemController(IProductBL productBL, IOrderBL orderBL, ILocationBL locationBL)
         {
             _productBL = productBL;
             _orderBL = orderBL;

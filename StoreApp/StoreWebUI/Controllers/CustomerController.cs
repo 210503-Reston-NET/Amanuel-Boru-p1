@@ -12,14 +12,15 @@ namespace StoreWebUI.Controllers
 {
     public class CustomerController : Controller
     {
-        private CustomerBL _customerBL;
-        private OrderBL _orderBL;
+        private ICustomerBL _customerBL;
+        private IOrderBL _orderBL;
 
-        public CustomerController(CustomerBL customerBL, OrderBL orderBL)
+        public CustomerController(ICustomerBL customerBL, IOrderBL orderBL)
         {
             _customerBL = customerBL;
             _orderBL = orderBL;
         }
+
 
         // GET: CustomerController
         public ActionResult Index()

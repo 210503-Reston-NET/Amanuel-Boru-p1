@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace StoreBL
 {
-    public class CustomerBL
+    public class CustomerBL :ICustomerBL
     {
         private CustomerDB _customerDB;
 

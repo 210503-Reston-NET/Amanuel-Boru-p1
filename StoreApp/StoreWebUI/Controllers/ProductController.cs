@@ -12,9 +12,9 @@ namespace StoreWebUI.Controllers
 {
     public class ProductController : Controller
     {
-        private ProductBL _productBL;
+        private IProductBL _productBL;
 
-        public ProductController(ProductBL productBL)
+        public ProductController(IProductBL productBL)
         {
             _productBL = productBL;
         }

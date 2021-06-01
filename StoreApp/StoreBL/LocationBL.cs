@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace StoreBL
 {
-    public class LocationBL
+    public class LocationBL : ILocationBL
     {
         private LocationDB _locationDB;
 

@@ -5,7 +5,7 @@ using System;
 
 namespace StoreBL
 {
-    public class OrderBL
+    public class OrderBL : IOrderBL
     {
         private OrderDB _orderDB;
         private ProductsDB _productDB;

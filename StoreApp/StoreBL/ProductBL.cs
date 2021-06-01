@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace StoreBL
 {
-    public class ProductBL
+    public class ProductBL : IProductBL
     {
         private ProductsDB _ProductsDB;
 

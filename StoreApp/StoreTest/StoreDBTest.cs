@@ -1,26 +1,27 @@
-using Model = StoreModels;
+using StoreModels;
 using Xunit;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using StoreDL;
 using System.Linq;
 using System;
+
 namespace StoreTest
 {
     public class StoreDBTest
     {
-        /*
-        private readonly DbContextOptions<Entity.p0storeContext> options;
-
+        
+        private readonly DbContextOptions<StoreDBContext> options;
+        private bool initialized = false;
         public StoreDBTest()
         {
-            options = new DbContextOptionsBuilder<Entity.p0storeContext>().UseSqlite("Filename=Test.db").Options;
+            options = new DbContextOptionsBuilder<StoreDBContext>().UseSqlite("Filename=Test.db").Options;
             seed();
         }
-
+        
         [Fact]
         public void GetAllCustomersShouldReturnAllCustomers(){
-            using (var context = new Entity.p0storeContext(options)){
+            using (var context = new StoreDBContext(options)){
                 CustomerDB _customerDB = new CustomerDB(context);
                 var customers = _customerDB.GetAllCustomers();
                 int count = customers.Count;
@@ -28,10 +29,10 @@ namespace StoreTest
                 Assert.Equal(1, count);
             }
         }
-
+        
         [Fact]
         public void GetCustomerReturnsCustomer(){
-            using (var context = new Entity.p0storeContext(options)){
+            using (var context = new StoreDBContext(options)){
                 CustomerDB _customerDB = new CustomerDB(context);
                 var customer1 = _customerDB.GetCustomer("amanboru");
                 string username = customer1.UserName;
@@ -39,34 +40,34 @@ namespace StoreTest
                 Assert.Equal("amanboru", username);
             }
         }
-
+        
         [Fact]
         public void GetCustomerReturnsNull(){
-            using (var context = new Entity.p0storeContext(options)){
+            using (var context = new StoreDBContext(options)){
                 CustomerDB _customerDB = new CustomerDB(context);
                 var customer1 = _customerDB.GetCustomer("doesntExist");
 
                 Assert.Null(customer1);
             }
         }
-
+        
         [Fact]
         public void AddCustomerWorks(){
-            using (var context = new Entity.p0storeContext(options)){
+            using (var context = new StoreDBContext(options)){
                 CustomerDB _customerDB = new CustomerDB(context);
-                _customerDB.AddCustomer(new Model.Customer("john doe", "johndoe"));
+                _customerDB.AddCustomer(new Customer("john doe", "johndoe"));
             }
 
-            using (var assertContext = new Entity.p0storeContext(options)){
-                var customer = assertContext.Customers.FirstOrDefault(cust => cust.Username == "johndoe");
+            using (var assertContext = new StoreDBContext(options)){
+                var customer = assertContext.Customers.FirstOrDefault(cust => cust.UserName == "johndoe");
                 Assert.NotNull(customer);
                 Assert.Equal("john doe", customer.Name);
             }
         }
-
+        
         [Fact]
         public void GetAllLocationsShouldReturnAllLocation(){
-            using (var context = new Entity.p0storeContext(options)){
+            using (var context = new StoreDBContext(options)){
                 LocationDB _locationDB = new LocationDB(context);
                 var customers = _locationDB.GetAllLocations();
                 int count = customers.Count;
@@ -74,23 +75,23 @@ namespace StoreTest
                 Assert.Equal(1, count);
             }
         }
-
+        
         [Fact]
         public void GetLocationReturnsLocation(){
-            using (var context = new Entity.p0storeContext(options)){
+            using (var context = new StoreDBContext(options)){
                 LocationDB _locationDB = new LocationDB(context);
-                var location = _locationDB.GetLocation(new Model.Location("cool store", "123 cool st Baltimore MD"));
+                var location = _locationDB.GetLocationById(1);
                 int locationID = location.LocationID;
 
                 Assert.Equal(1, locationID);
             }
         }
-
+        
         [Fact]
         public void GetLocationReturnsNull(){
-            using (var context = new Entity.p0storeContext(options)){
+            using (var context = new StoreDBContext(options)){
                 LocationDB _locationDB = new LocationDB(context);
-                var location = _locationDB.GetLocation(new Model.Location("non existing store", "123 doesnt exist"));
+                var location = _locationDB.GetLocationById(2);
 
                 Assert.Null(location);
             }
@@ -98,20 +99,20 @@ namespace StoreTest
 
         [Fact]
         public void AddLocationWorks(){
-            using (var context = new Entity.p0storeContext(options)){
+            using (var context = new StoreDBContext(options)){
                 LocationDB _locationDB = new LocationDB(context);
-                _locationDB.AddLocation(new Model.Location("new location", "123 new location"));
+                _locationDB.AddLocation(new Location("new location", "123 new location"));
             }
 
-            using (var assertContext = new Entity.p0storeContext(options)){
-                var location = assertContext.Locations.FirstOrDefault(loca => loca.LocationName == "new location" && loca.LocationAddress == "123 new location");
+            using (var assertContext = new StoreDBContext(options)){
+                var location = assertContext.Locations.FirstOrDefault(loca => loca.LocationName == "new location" && loca.Address == "123 new location");
                 Assert.NotNull(location);
             }
         }
 
         [Fact]
         public void GetAllOrdersShouldReturnAllOrders(){
-            using (var context = new Entity.p0storeContext(options)){
+            using (var context = new StoreDBContext(options)){
                 OrderDB _orderDB = new OrderDB(context);
                 var orders = _orderDB.GetAllOrder();
                 int count = orders.Count;
@@ -120,65 +121,136 @@ namespace StoreTest
             }
         }
 
+        
+        [Fact]
+        public void AddOrderWorks()
+        {
+            using (var context = new StoreDBContext(options))
+            {
+                OrderDB _orderBL = new OrderDB(context);
+                _orderBL.AddOrder(new Order("Test", 1, DateTime.Now, 0));
+            }
+
+            using (var assertContext = new StoreDBContext(options))
+            {
+                var order = assertContext.Orders.FirstOrDefault(ord => ord.UserName == "Test");
+                Assert.NotNull(order);
+            }
+        }
+
+        [Fact]
+        public void GetOrderWorks()
+        {
+            using (var context = new StoreDBContext(options))
+            {
+                OrderDB _orderDB = new OrderDB(context);
+                var order = _orderDB.GetOrder(1);
+                int orderId = order.OrderId;
+
+                Assert.Equal(1, orderId);
+            }
+        }
+        
+
+        [Fact]
+        public void GetOrderReturnsNull()
+        {
+            using (var context = new StoreDBContext(options))
+            {
+                OrderDB _orderDB = new OrderDB(context);
+                var order = _orderDB.GetOrder(5);
+
+                Assert.Null(order);
+            }
+        }
 
         private void seed(){
+            if (!initialized) { 
+                using (var context = new StoreDBContext(options)){
 
-            using (var context = new Entity.p0storeContext(options)){
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-                context.Customers.AddRange(
-                    new Entity.Customer{
-                        Username = "amanboru",
-                        Name = "Amanuel Boru",
-                        Orders = new List<Entity.Order>{
-                            new Entity.Order {
-                                OrderId = 1,
-                                Cusername = "amanboru",
-                                LocationId = 1,
-                                Orderdate = DateTime.Now,
-                                Total = 20.00,
-                                Items = new List<Entity.Item> {
-                                    new Entity.Item {
-                                        ItemId = 1,
-                                        LocationId = 1,
-                                        OrderId = 1,
-                                        ProductName = "Lily",
-                                        Price = 5.00,
-                                        Quantity = 4
-                                    }
-                                }
-                            }
+                    context.Database.EnsureDeleted();
+                    context.Database.EnsureCreated();
+
+                    context.Customers.AddRange(
+                        new Customer{
+                            UserName = "amanboru",
+                            Name = "Amanuel Boru",
                         }
-                    }
-                );
+                    );
 
-                context.Locations.AddRange(
-                    new Entity.Location {
-                        LocationId = 1,
-                        LocationName = "cool store",
-                        LocationAddress = "123 cool st Baltimore MD",
-                        Items = new List<Entity.Item> {
-                            new Entity.Item {
-                                ItemId = 2,
-                                LocationId = 1,
-                                OrderId = null,
-                                ProductName = "Lily",
-                                Price = 5.00,
-                                Quantity = 15
-                            },
-                            new Entity.Item {
-                                ItemId = 3,
-                                LocationId = 1,
-                                OrderId = null,
-                                ProductName = "Rose",
-                                Price = 9.99,
-                                Quantity = 20
-                            }
+                    context.Locations.AddRange(
+                        new Location
+                        {
+                            LocationID = 1,
+                            Address = "123 lovely streat Baltimore, MD",
+                            LocationName = "Lovely",
+                        }
+                     );
+
+                    context.Products.AddRange(
+                        new Product
+                        {
+                            ProductId = 1,
+                            ProductName = "Rose",
+                            Price = 12.5
                         },
-                    }
-                );
-                context.SaveChanges();
+                        new Product
+                        {
+                            ProductId = 2,
+                            ProductName = "Lily",
+                            Price = 4.00
+                        }
+                    );
+
+                    context.Inventories.AddRange(
+                        new Inventory
+                        {
+                            InventoryId = 1,
+                            ProductId = 1,
+                            LocationId = 1,
+                            Quantity = 5
+                        },
+                        new Inventory
+                        {
+                            InventoryId = 2,
+                            ProductId = 2,
+                            LocationId = 1,
+                            Quantity = 10
+                        }
+                    );
+
+                    context.Orders.AddRange(
+                        new Order
+                        {
+                            OrderId = 1,
+                            LocationId = 1,
+                            UserName = "amanboru",
+                            Orderdate = DateTime.Now,
+                            Total = 16.50
+                        }
+                    );
+
+                    context.Items.AddRange(
+                        new Item
+                        {
+                            ItemId = 1,
+                            OrderId = 1,
+                            ProductId = 1,
+                            Quantity = 1
+                        },
+                        new Item
+                        {
+                            ItemId = 2,
+                            OrderId = 1,
+                            ProductId = 2,
+                            Quantity = 1
+                        }
+                    );
+                    context.SaveChanges();
+                }
             }
-        }*/
+
+            initialized = true;
+        }
     }
 }
