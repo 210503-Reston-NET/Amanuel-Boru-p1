@@ -13,10 +13,11 @@ namespace StoreWebUI.Controllers
     public class StoresController : Controller
     {
         private LocationBL _locationBL;
-
-        public StoresController(LocationBL locationBL)
+        private OrderBL _orderBL;
+        public StoresController(LocationBL locationBL, OrderBL orderBL)
         {
             _locationBL = locationBL;
+            _orderBL = orderBL;
         }
 
         // GET: StoresController
@@ -50,6 +51,27 @@ namespace StoreWebUI.Controllers
             {
                 return View();
             }
+        }
+
+        // GET: CustomerController/Details/5
+        public ActionResult Details(int id)
+        {
+            ViewBag.id = id;
+            return View();
+        }
+
+        public ActionResult OrderBydate(int id)
+        {
+            ViewBag.id = id;
+            List<OrderVM> orders = _orderBL.LocationOrdersBydate(id).Select(order => new OrderVM(order)).ToList();
+            return View(orders);
+        }
+
+        public ActionResult OrderBYTotal(int id)
+        {
+            ViewBag.id = id;
+            List<OrderVM> orders = _orderBL.LocationOrdersByTotal(id).Select(order => new OrderVM(order)).ToList();
+            return View(orders);
         }
 
         // GET: StoresController/Edit/5

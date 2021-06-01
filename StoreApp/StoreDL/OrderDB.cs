@@ -108,7 +108,7 @@ namespace StoreDL
                 }
             }
 
-            customerOrder.Sort(delegate(Order x, Order y)
+            customerOrder.Sort(delegate(Order y, Order x)
                 {
                     return x.Orderdate.CompareTo(y.Orderdate);
                 });
@@ -126,7 +126,7 @@ namespace StoreDL
                 }
             }
 
-            customerOrder.Sort(delegate(Order x, Order y)
+            customerOrder.Sort(delegate(Order y, Order x)
                 {
                     return x.Total.CompareTo(y.Total);
                 });
@@ -134,40 +134,28 @@ namespace StoreDL
             return customerOrder;
         }
 
-        public List<Order> LocationOrdersBydate(Location location){
-            List<Order> allOrders = GetAllOrder();
-            List<Order> locationOrder = new List<Order>();
+        public List<Order> LocationOrdersBydate(int location){
 
-            foreach(Order order in allOrders){
-                if (order.LocationId == location.LocationID){
-                    locationOrder.Add(order);
-                }
-            }
+            List<Order> orders = _context.Orders.Where(ord => ord.LocationId == location).Select(order => order).ToList();
 
-            locationOrder.Sort(delegate(Order x, Order y)
+            orders.Sort(delegate(Order y, Order x)
                 {
                     return x.Orderdate.CompareTo(y.Orderdate);
                 });
 
-            return locationOrder;
+            return orders;
         }
 
-        public List<Order> LocationOrdersByTotal(Location location){
-            List<Order> allOrders = GetAllOrder();
-            List<Order> locationOrder = new List<Order>();
+        public List<Order> LocationOrdersByTotal(int location){
 
-            foreach(Order order in allOrders){
-                if (order.LocationId == location.LocationID){
-                    locationOrder.Add(order);
-                }
-            }
+            List<Order> orders = _context.Orders.Where(ord => ord.LocationId == location).Select(order => order).ToList();
 
-            locationOrder.Sort(delegate(Order x, Order y)
+            orders.Sort(delegate(Order y, Order x)
                 {
                     return x.Total.CompareTo(y.Total);
                 });
 
-            return locationOrder;
+            return orders;
         }
     }
 }

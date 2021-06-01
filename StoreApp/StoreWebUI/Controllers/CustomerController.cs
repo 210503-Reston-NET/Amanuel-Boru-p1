@@ -13,10 +13,12 @@ namespace StoreWebUI.Controllers
     public class CustomerController : Controller
     {
         private CustomerBL _customerBL;
+        private OrderBL _orderBL;
 
-        public CustomerController(CustomerBL customerBL)
+        public CustomerController(CustomerBL customerBL, OrderBL orderBL)
         {
             _customerBL = customerBL;
+            _orderBL = orderBL;
         }
 
         // GET: CustomerController
@@ -26,9 +28,24 @@ namespace StoreWebUI.Controllers
         }
 
         // GET: CustomerController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string username)
         {
+            ViewBag.UserName = username;
             return View();
+        }
+
+        public ActionResult OrderBydate(string username)
+        {
+            ViewBag.UserName = username;
+            List<OrderVM> orders = _orderBL.CustomerOrdersBydate(new Customer(username)).Select(order => new OrderVM(order)).ToList();
+            return View(orders);
+        }
+
+        public ActionResult OrderBYTotal(string username)
+        {
+            ViewBag.UserName = username;
+            List<OrderVM> orders = _orderBL.CustomerOrdersByTotal(new Customer(username)).Select(order => new OrderVM(order)).ToList();
+            return View(orders);
         }
 
         // GET: CustomerController/Create

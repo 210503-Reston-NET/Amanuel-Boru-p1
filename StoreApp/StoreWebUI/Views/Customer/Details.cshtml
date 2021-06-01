@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Customer Details</h1>
+
+<div>
+    @Html.ActionLink("Order sorted by date", "OrderBydate", new { username = ViewBag.UserName })
+</div>
+
+<div>
+    @Html.ActionLink("Order sorted by Total", "OrderBYTotal", new { username = ViewBag.UserName })
+</div>
