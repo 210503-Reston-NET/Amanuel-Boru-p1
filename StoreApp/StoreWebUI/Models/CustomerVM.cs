@@ -20,6 +20,7 @@ namespace StoreWebUI.Models
         }
 
         [Required]
+        [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Username must be made up of numbers, letters and \'_\'")]
         public string username { get; set; }
 
         [Required]

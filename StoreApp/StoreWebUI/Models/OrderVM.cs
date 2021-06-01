@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,6 +24,9 @@ namespace StoreWebUI.Models
         }
 
         public int OrderId { get; set; }
+
+        [Required]
+        [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Username must be made up of numbers, letters and \'_\'")]
         public string UserName { get; set; }
         public string LocationId { get; set; }
         public DateTime Orderdate { get; set; }

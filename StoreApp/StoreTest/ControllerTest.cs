@@ -101,7 +101,7 @@ namespace StoreTest
             mockBL.Setup(x => x.GetAllOrder()).Returns(
                 new List<Order>()
                 {
-                    new Order("test1", 1, DateTime.Now, 0)
+                    new Order("aman1", 1, DateTime.Now, 0)
                 }
 
                 );
@@ -110,8 +110,8 @@ namespace StoreTest
             mockBL2.Setup(x => x.GetAllCustomers()).Returns(
                 new List<Customer>()
                 {
-                    new Customer("test1", "Test one"),
-                    new Customer("test1", "Test two")
+                    new Customer("aman1", "Test one"),
+                    new Customer("aman1", "Test two")
                 }
                 );
 
@@ -129,7 +129,73 @@ namespace StoreTest
 
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<IEnumerable<OrderVM>>(viewResult.ViewData.Model);
-            Assert.Equal(1, model.Count());
+            int amount = model.Count();
+            Assert.Equal(1, amount);
         }
+
+        [Fact]
+        public void InventoryControllerShouldWork()
+        {
+            var mockBL = new Mock<ILocationBL>();
+            mockBL.Setup(x => x.GetInventory(It.IsAny<Location>())).Returns(
+                new List<Inventory>()
+                {
+                    new Inventory(1, 1 ,1),
+                    new Inventory(1, 2, 1)
+                }
+                );
+
+            var mockBL2 = new Mock<IProductBL>();
+            mockBL2.Setup(x => x.GetProduct(It.IsAny<int>())).Returns(
+                new Product("Rose", 5.5)
+                );
+
+            var controller = new InventoryController(mockBL.Object, mockBL2.Object);
+
+            var result = controller.Index(1);
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<IEnumerable<InventoryVM>>(viewResult.ViewData.Model);
+            Assert.Equal(2, model.Count());
+
+        }
+
+        [Fact]
+        public void ItemControllerShouldWork()
+        {
+            var mockBL = new Mock<IProductBL>();
+            mockBL.Setup(x => x.GetProduct(It.IsAny<int>())).Returns(
+                new Product("Rose", 5.5)
+                );
+
+            var mockBL2 = new Mock<IOrderBL>();
+            mockBL2.Setup(x => x.GetItems(It.IsAny<int>())).Returns(
+                new List<Item>()
+                {
+                    new Item(1,1,1),
+                    new Item(1,2,3)
+                }
+
+                );
+
+            var mockBL3 = new Mock<ILocationBL>();
+            mockBL3.Setup(x => x.GetAllLocations()).Returns(
+                new List<Location>()
+                {
+                    new Location("loation one", "123 address"),
+                    new Location("loation two", "456 address")
+                }
+                );
+
+            var controller = new ItemController(mockBL.Object, mockBL2.Object, mockBL3.Object);
+
+            var result = controller.Index(1);
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<IEnumerable<ItemVM>>(viewResult.ViewData.Model);
+            Assert.Equal(2, model.Count());
+
+        }
+
     }
 }

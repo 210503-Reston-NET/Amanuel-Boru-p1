@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -40,6 +41,8 @@ namespace StoreWebUI.Models
         public int LocationId { get; set; }
         public string ProductId { get; set; }
         public string ProductName { get; set; }
+
+        [Required]
         public int Quantity { get; set; }
 
         public List<SelectListItem> ProductList { get; set; }
