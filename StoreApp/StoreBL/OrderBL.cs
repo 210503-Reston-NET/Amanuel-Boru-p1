@@ -15,10 +15,13 @@ namespace StoreBL
             _productDB = productDB;
         }
 
-        public Order AddOreder(Order newOrder, Location location){
-            double total = calculateTotal(newOrder);
-            newOrder.Total = total;
+        public Order AddOreder(Order newOrder){
             return _orderDB.AddOrder(newOrder);
+        }
+
+        public Order GetOrder(int id)
+        {
+            return _orderDB.GetOrder(id);
         }
 
         private double calculateTotal(Order newOrder)
@@ -34,6 +37,16 @@ namespace StoreBL
             }
 
             return total;
+        }
+
+        public List<Item> GetItems(int id)
+        {
+            return _orderDB.GetItems(id);
+        }
+
+        public Item GetItem(int id)
+        {
+            return _orderDB.GetItem(id);
         }
 
         public List<Order> GetAllOrder(){
@@ -54,6 +67,21 @@ namespace StoreBL
 
         public List<Order> LocationOrdersByTotal(Location location){
             return _orderDB.LocationOrdersByTotal(location);
+        }
+
+        public void AddItem(Item item)
+        {
+            _orderDB.AddItem(item);
+        }
+
+        public void UpdateOrder(Order order)
+        {
+            _orderDB.UpdateOrder(order);
+        }
+
+        public void DeleteOrder(int id)
+        {
+            _orderDB.DeleteOrder(id);
         }
     }
 }

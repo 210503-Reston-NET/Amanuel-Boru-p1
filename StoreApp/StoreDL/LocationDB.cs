@@ -60,6 +60,29 @@ namespace StoreDL
             return inventory;
         }
 
+        public List<Inventory> GetInventory(int location)
+        {
+            Location found = _context.Locations.FirstOrDefault(local => local.LocationID == location);
+
+            if (found == null)
+            {
+                throw new Exception("Location does not exist");
+            }
+
+            List<Inventory> inventory = _context.Inventories.Where(
+                item => item.LocationId == found.LocationID)
+                .Select(
+                    item => new Inventory(item.InventoryId, item.LocationId, item.ProductId, item.Quantity)
+                ).ToList();
+
+            return inventory;
+        }
+
+        public Inventory GetInventoryItemFromLocation(int locationID, int productId)
+        {
+            return _context.Inventories.FirstOrDefault(item => item.LocationId == locationID && item.ProductId == productId);
+        }
+
         public Inventory UpdateInventory(Inventory inventory)
         {
             _context.Inventories.Update(inventory);

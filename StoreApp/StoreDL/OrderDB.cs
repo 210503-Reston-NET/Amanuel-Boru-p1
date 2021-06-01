@@ -28,17 +28,15 @@ namespace StoreDL
                 .ToList();
         }
 
+        public Order GetOrder(int id)
+        {
+            return _context.Orders.FirstOrDefault(order => order.OrderId == id);
+        }
+
         public Order AddOrder(Order newOrder){
             _context.Orders.Add(newOrder);
             _context.SaveChanges();
             
-            List<Item> items = newOrder.Items;
-
-            foreach(Item item in items){
-                _context.Items.Add(item);
-                locationDB.changeInventory(newOrder.LocationId, new Inventory(newOrder.LocationId, item.ProductId), -1*item.Quantity);
-            }
-            _context.SaveChanges();
             return newOrder;
         }
 
@@ -46,10 +44,15 @@ namespace StoreDL
             List<Item> items = _context.Items.Where(
                 item => item.OrderId == orderID)
                 .Select(
-                    item => new Item(orderID, item.ProductId, item.Quantity)
+                    item => new Item(item.ItemId, orderID, item.ProductId, item.Quantity)
                 ).ToList();
 
             return items;
+        }
+
+        public Item GetItem(int id)
+        {
+            return _context.Items.FirstOrDefault(item => item.ItemId == id);
         }
 
         public Customer GetCustomer(string username){
@@ -67,6 +70,32 @@ namespace StoreDL
             Location found =  _context.Locations.FirstOrDefault(location => location.LocationID == locationID);
             if (found == null) return null;
             return new Location(found.LocationName, found.Address, found.LocationID);
+        }
+
+        public void DeleteOrder(int id)
+        {
+            List<Item> items = _context.Items.Where(item => item.OrderId == id).Select(item => item).ToList();
+
+            foreach(Item item in items)
+            {
+                _context.Items.Remove(item);
+                _context.SaveChanges();
+            }
+            Order toBeDeleted = _context.Orders.FirstOrDefault(order => order.OrderId == id);
+            _context.Orders.Remove(toBeDeleted);
+            _context.SaveChanges();
+        }
+
+        public void UpdateOrder(Order order)
+        {
+            _context.Orders.Update(order);
+            _context.SaveChanges();
+        }
+
+        public void AddItem(Item item)
+        {
+            _context.Items.Add(item);
+            _context.SaveChanges();
         }
 
         public List<Order> GetCustomerOrderByDate(Customer customer){

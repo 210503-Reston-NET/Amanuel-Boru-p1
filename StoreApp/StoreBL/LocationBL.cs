@@ -52,6 +52,11 @@ namespace StoreBL
             return _locationDB.GetInventory(location);
         }
 
+        public List<Inventory> GetInventory(int location)
+        { 
+            return _locationDB.GetInventory(location);
+        }
+
         public Inventory UpdateInventory(Inventory inventory)
         {
             return _locationDB.UpdateInventory(inventory);
@@ -68,6 +73,11 @@ namespace StoreBL
         public Inventory GetInventoryItem(int id)
         {
             return _locationDB.GetInventoryItem(id);
+        }
+
+        public Inventory GetInventoryItemFromLocation(int locationID, int productId)
+        {
+            return _locationDB.GetInventoryItemFromLocation(locationID, productId);
         }
 
         public Location UpdateLocation(Location location)

@@ -38,6 +38,14 @@ namespace StoreModels
             Total = total;
         }
 
+        public Order(string customer, int location, DateTime orderdate, double total)
+        {
+            UserName = customer;
+            LocationId = location;
+            Orderdate = orderdate;
+            Total = total;
+        }
+
         public int OrderId { get; set; }
         public string UserName { get; set; }
         public int LocationId { get; set; }

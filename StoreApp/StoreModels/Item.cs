@@ -21,6 +21,14 @@ namespace StoreModels
             Quantity = quantity;
         }
 
+        public Item(int itemId, int orderId, int product, int quantity)
+        {
+            ItemId = itemId;
+            OrderId = orderId;
+            ProductId = product;
+            Quantity = quantity;
+        }
+
         public int ItemId { get; set; }
 
         public int OrderId { get; set; }
