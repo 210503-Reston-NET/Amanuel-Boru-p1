@@ -21,6 +21,8 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: '210503-Reston-NET_Amanuel-Boru-p1'
     projectName: 'Amanuel-Boru-p1'
+    extraProperties: 'sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/coverage.opencover.xml'
+
 #This a basic pipline that restores builds and tests
 - task: DotNetCoreCLI@2
   displayName: Restore project deps
@@ -34,19 +36,25 @@ steps:
     command: 'build'
     projects: '$(solution)'
 - task: DotNetCoreCLI@2
-  displayName: test
+  displayName: 'Run unit tests - $(buildConfiguration)'
   inputs:
-    command: 'test'
-    projects: '**/StoreApp/StoreTest/*.csproj'
-    arguments: --configuration $(buildConfiguration) --collect "Code Coverage"
-#- task: PublishCodeCoverageResults@1
-#  inputs:
-#    codeCoverageTool: 'Cobertura'
-#    summaryFileLocation: '**/corbertura/coverage.xml'
-#- task: SonarCloudAnalyze@1
-#  displayName: run code analysis
-#- task: SonarCloudPublish@1
-#  displayName: publish code analysis
+      command: 'test'
+      arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true "/p:CoverletOutputFormat=\"opencover,Cobertura\""'
+      publishTestResults: true
+      projects: '$(solution)'
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage report'
+  inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+      reportDirectory: '$(Build.SourcesDirectory)/StoreApp/StoreTest/'
+
+- task: SonarCloudAnalyze@1
+  displayName: Run Code Analysis
+- task: SonarCloudPublish@1
+  displayName: Publish Code Analysis 
+
 - task: DotNetCoreCLI@2
   displayName: publish
   inputs:
