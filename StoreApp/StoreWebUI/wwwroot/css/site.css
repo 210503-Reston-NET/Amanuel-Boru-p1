@@ -70,3 +70,40 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.home-page-box {
+    height: 500px;
+    padding: 0;
+    margin: 0;
+    align-content: center;
+    text-align: center;
+    background-size: cover;
+    background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(https://images.pexels.com/photos/136255/pexels-photo-136255.jpeg?cs=srgb&dl=pexels-monicore-136255.jpg&fm=jpg)
+}
+
+.home-page-box-in {
+    padding-top: 10%;
+    
+}
+
+.home-page-box-h1 {
+    align-content: center;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+}
+
+.home-page-box-p {
+    align-content: center;
+    text-align: center;
+    padding-top: 25px;
+    padding-left: 50px;
+    padding-right: 50px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+}
+
+body {
+    background-color: #e3e3e3;
+}
