@@ -6,10 +6,19 @@
 <h1>Store Details</h1>
 
 <div>
-    @Html.ActionLink("Order sorted by date", "OrderBydate", new { id = ViewBag.id })
+    <h4>View orders sorted by date</h4>
+    @Html.ActionLink("Ascending order", "OrderBydate", new { id = ViewBag.id }) |
+    @Html.ActionLink("Descending order", "OrderBydateDes", new { id = ViewBag.id })
 </div>
 
+<hr />
+
+
 <div>
-    @Html.ActionLink("Order sorted by Total", "OrderBYTotal", new { id = ViewBag.id })
+    <h4>View orders sorted by Total price</h4>
+    @Html.ActionLink("Ascending order", "OrderBYTotal", new { id = ViewBag.id }) |
+    @Html.ActionLink("Descending order", "OrderBYTotalDes", new { id = ViewBag.id })
 </div>
+
+
 

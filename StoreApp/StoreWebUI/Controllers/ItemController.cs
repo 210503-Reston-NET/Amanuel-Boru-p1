@@ -123,6 +123,7 @@ namespace StoreWebUI.Controllers
         public ActionResult Delete(int id)
         {
             Item item = _orderBL.GetItem(id);
+            ViewData["OrderId"] = item.OrderId;
             return View(new ItemVM(item, _productBL.GetProduct(item.ProductId).ToString()));
         }
 
@@ -133,8 +134,14 @@ namespace StoreWebUI.Controllers
         {
             try
             {
-                Log.Information("Item deleted");
-                return RedirectToAction(nameof(Index));
+                
+                if (ModelState.IsValid)
+                {
+                    Log.Information("Item deleted");
+                    int orderId = _orderBL.DeleteItem(id).OrderId;
+                    return RedirectToAction(nameof(Index), new { id = orderId });
+                }
+                return View();
             }
             catch
             {

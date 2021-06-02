@@ -71,11 +71,27 @@ namespace StoreWebUI.Controllers
             return View(orders);
         }
 
+        public ActionResult OrderBydateDes(int id)
+        {
+            Log.Information("Order By date called");
+            ViewBag.id = id;
+            List<OrderVM> orders = _orderBL.LocationOrdersBydateDes(id).Select(order => new OrderVM(order)).ToList();
+            return View(orders);
+        }
+
         public ActionResult OrderBYTotal(int id)
         {
             Log.Information("Order by total called");
             ViewBag.id = id;
             List<OrderVM> orders = _orderBL.LocationOrdersByTotal(id).Select(order => new OrderVM(order)).ToList();
+            return View(orders);
+        }
+
+        public ActionResult OrderBYTotalDes(int id)
+        {
+            Log.Information("Order by total called");
+            ViewBag.id = id;
+            List<OrderVM> orders = _orderBL.LocationOrdersByTotalDes(id).Select(order => new OrderVM(order)).ToList();
             return View(orders);
         }
 

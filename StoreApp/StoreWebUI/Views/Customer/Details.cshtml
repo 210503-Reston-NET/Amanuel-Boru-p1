@@ -6,9 +6,18 @@
 <h1>Customer Details</h1>
 
 <div>
-    @Html.ActionLink("Order sorted by date", "OrderBydate", new { username = ViewBag.UserName })
+    <h4>View orders sorted by date</h4>
+    @Html.ActionLink("Ascending order", "OrderBydate", new { username = ViewBag.UserName }) |
+    @Html.ActionLink("Descending order", "OrderBydateDes", new { username = ViewBag.UserName })
 </div>
 
+<hr />
+
+
 <div>
-    @Html.ActionLink("Order sorted by Total", "OrderBYTotal", new { username = ViewBag.UserName })
+    <h4>View orders sorted by Total price</h4>
+    @Html.ActionLink("Ascending order", "OrderBYTotal", new { username = ViewBag.UserName }) |
+    @Html.ActionLink("Descending order", "OrderBYTotalDes", new { username = ViewBag.UserName })
 </div>
+
+

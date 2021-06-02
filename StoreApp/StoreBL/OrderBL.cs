@@ -57,21 +57,46 @@ namespace StoreBL
             return _orderDB.GetCustomerOrderByDate(customer);
         }
 
+        public List<Order> CustomerOrdersBydateDes(Customer customer)
+        {
+            return _orderDB.GetCustomerOrderByDateDes(customer);
+        }
+
         public List<Order> CustomerOrdersByTotal(Customer customer){
             return _orderDB.GetCustomerOrderByTotal(customer);
+        }
+
+        public List<Order> CustomerOrdersByTotalDes(Customer customer)
+        {
+            return _orderDB.GetCustomerOrderByTotalDes(customer);
         }
 
         public List<Order> LocationOrdersBydate(int location){
             return _orderDB.LocationOrdersBydate(location);
         }
 
+        public List<Order> LocationOrdersBydateDes(int location)
+        {
+            return _orderDB.LocationOrdersBydateDes(location);
+        }
+
         public List<Order> LocationOrdersByTotal(int location){
             return _orderDB.LocationOrdersByTotal(location);
+        }
+
+        public List<Order> LocationOrdersByTotalDes(int location)
+        {
+            return _orderDB.LocationOrdersByTotalDes(location);
         }
 
         public void AddItem(Item item)
         {
             _orderDB.AddItem(item);
+        }
+
+        public Item DeleteItem(int id)
+        {
+            return _orderDB.DeleteItem(id);
         }
 
         public void UpdateOrder(Order order)

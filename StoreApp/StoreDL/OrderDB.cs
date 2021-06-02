@@ -86,6 +86,14 @@ namespace StoreDL
             _context.SaveChanges();
         }
 
+        public Item DeleteItem(int id)
+        {
+            Item toBeDeleted = _context.Items.FirstOrDefault(item => item.ItemId == id);
+            _context.Items.Remove(toBeDeleted);
+            _context.SaveChanges();
+            return toBeDeleted;
+        }
+
         public void UpdateOrder(Order order)
         {
             _context.Orders.Update(order);
@@ -108,10 +116,31 @@ namespace StoreDL
                 }
             }
 
-            customerOrder.Sort(delegate(Order y, Order x)
+            customerOrder.Sort(delegate(Order x, Order y)
                 {
                     return x.Orderdate.CompareTo(y.Orderdate);
                 });
+
+            return customerOrder;
+        }
+
+        public List<Order> GetCustomerOrderByDateDes(Customer customer)
+        {
+            List<Order> allOrders = GetAllOrder();
+            List<Order> customerOrder = new List<Order>();
+
+            foreach (Order order in allOrders)
+            {
+                if (order.UserName == customer.UserName)
+                {
+                    customerOrder.Add(order);
+                }
+            }
+
+            customerOrder.Sort(delegate (Order y, Order x)
+            {
+                return x.Orderdate.CompareTo(y.Orderdate);
+            });
 
             return customerOrder;
         }
@@ -126,10 +155,31 @@ namespace StoreDL
                 }
             }
 
-            customerOrder.Sort(delegate(Order y, Order x)
+            customerOrder.Sort(delegate(Order x, Order y)
                 {
                     return x.Total.CompareTo(y.Total);
                 });
+
+            return customerOrder;
+        }
+
+        public List<Order> GetCustomerOrderByTotalDes(Customer customer)
+        {
+            List<Order> allOrders = GetAllOrder();
+            List<Order> customerOrder = new List<Order>();
+
+            foreach (Order order in allOrders)
+            {
+                if (order.UserName == customer.UserName)
+                {
+                    customerOrder.Add(order);
+                }
+            }
+
+            customerOrder.Sort(delegate (Order y, Order x)
+            {
+                return x.Total.CompareTo(y.Total);
+            });
 
             return customerOrder;
         }
@@ -138,10 +188,23 @@ namespace StoreDL
 
             List<Order> orders = _context.Orders.Where(ord => ord.LocationId == location).Select(order => order).ToList();
 
-            orders.Sort(delegate(Order y, Order x)
+            orders.Sort(delegate(Order x, Order y)
                 {
                     return x.Orderdate.CompareTo(y.Orderdate);
                 });
+
+            return orders;
+        }
+
+        public List<Order> LocationOrdersBydateDes(int location)
+        {
+
+            List<Order> orders = _context.Orders.Where(ord => ord.LocationId == location).Select(order => order).ToList();
+
+            orders.Sort(delegate (Order y, Order x)
+            {
+                return x.Orderdate.CompareTo(y.Orderdate);
+            });
 
             return orders;
         }
@@ -150,10 +213,23 @@ namespace StoreDL
 
             List<Order> orders = _context.Orders.Where(ord => ord.LocationId == location).Select(order => order).ToList();
 
-            orders.Sort(delegate(Order y, Order x)
+            orders.Sort(delegate(Order x, Order y)
                 {
                     return x.Total.CompareTo(y.Total);
                 });
+
+            return orders;
+        }
+
+        public List<Order> LocationOrdersByTotalDes(int location)
+        {
+
+            List<Order> orders = _context.Orders.Where(ord => ord.LocationId == location).Select(order => order).ToList();
+
+            orders.Sort(delegate (Order y, Order x)
+            {
+                return x.Total.CompareTo(y.Total);
+            });
 
             return orders;
         }

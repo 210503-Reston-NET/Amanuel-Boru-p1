@@ -23,13 +23,23 @@ namespace StoreBL
 
         List<Order> CustomerOrdersBydate(Customer customer);
 
+        List<Order> CustomerOrdersBydateDes(Customer customer);
+
         List<Order> CustomerOrdersByTotal(Customer customer);
+
+        List<Order> CustomerOrdersByTotalDes(Customer customer);
 
         List<Order> LocationOrdersBydate(int location);
 
+        List<Order> LocationOrdersBydateDes(int location);
+
         List<Order> LocationOrdersByTotal(int location);
 
+        List<Order> LocationOrdersByTotalDes(int location);
+
         void AddItem(Item item);
+
+        Item DeleteItem(int id);
 
         void UpdateOrder(Order order);
 

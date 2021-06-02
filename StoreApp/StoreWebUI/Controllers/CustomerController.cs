@@ -45,11 +45,27 @@ namespace StoreWebUI.Controllers
             return View(orders);
         }
 
+        public ActionResult OrderBydateDes(string username)
+        {
+            Log.Information("Order by date from customer");
+            ViewBag.UserName = username;
+            List<OrderVM> orders = _orderBL.CustomerOrdersBydateDes(new Customer(username)).Select(order => new OrderVM(order)).ToList();
+            return View(orders);
+        }
+
         public ActionResult OrderBYTotal(string username)
         {
             Log.Information("Order by total from customer");
             ViewBag.UserName = username;
             List<OrderVM> orders = _orderBL.CustomerOrdersByTotal(new Customer(username)).Select(order => new OrderVM(order)).ToList();
+            return View(orders);
+        }
+
+        public ActionResult OrderBYTotalDes(string username)
+        {
+            Log.Information("Order by total from customer");
+            ViewBag.UserName = username;
+            List<OrderVM> orders = _orderBL.CustomerOrdersByTotalDes(new Customer(username)).Select(order => new OrderVM(order)).ToList();
             return View(orders);
         }
 
