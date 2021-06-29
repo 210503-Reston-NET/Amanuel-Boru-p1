@@ -1,6 +1,16 @@
 # Store App
 The store app is a software that helps customers purchase products from your business. Designed with functionality that would make virtual shopping much simpler! Customer features include: account creation, order placements, and order history. It also comes with admin functionality that let's store owners replenish inventory and view the specific store's order history!
 
+# Tech Stack
+  - C#
+  - ASP.NET MVC
+  - PostgreSQL DB
+  - EF Core
+  - Xunit
+  - Serilog
+  - Azure
+  - Azure DevOps
+
 # Start up
 To start this application on your own local machine follow this steps.
   1. clone this Repasitory to your local machine
